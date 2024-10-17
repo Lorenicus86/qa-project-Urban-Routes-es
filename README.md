@@ -6,5 +6,5 @@ Descripción de las tecnologías utilizadas: Pycharm, github, git.
 Instrucciones claras para ejecutar las pruebas:
     1. 
     2. 
-    3. 
+    3.
     4. 
