@@ -1,3 +1,4 @@
+
 # no modificar
 def retrieve_phone_code(driver) -> str:
     """Este código devuelve un número de confirmación de teléfono y lo devuelve como un string.
@@ -8,7 +9,7 @@ def retrieve_phone_code(driver) -> str:
     import time
     from selenium.common import WebDriverException
     code = None
-    for i in range(10):
+    for i in range(20):
         try:
             logs = [log["message"] for log in driver.get_log('performance') if log.get("message")
                     and 'api/v1/number?number' in log.get("message")]
@@ -18,7 +19,7 @@ def retrieve_phone_code(driver) -> str:
                                               {'requestId': message_data["params"]["requestId"]})
                 code = ''.join([x for x in body['body'] if x.isdigit()])
         except WebDriverException:
-            time.sleep(1)
+            time.sleep(10)
             continue
         if not code:
             raise Exception("No se encontró el código de confirmación del teléfono.\n"
