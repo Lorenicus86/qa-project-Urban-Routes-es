@@ -1,6 +1,9 @@
 import data
 from selenium import webdriver
-from localizadores import UrbanRoutesPage
+import time
+from metodos import UrbanRoutesPage
+#from localizadores import UrbanRoutesPage
+from selenium.webdriver.common.by import By
 
 class TestUrbanRoutes:
 
@@ -13,13 +16,15 @@ class TestUrbanRoutes:
         capabilities = DesiredCapabilities.CHROME
         capabilities["goog:loggingPrefs"] = {'performance': 'ALL'}
         cls.driver = webdriver.Chrome()
-
     def test_set_route(self):
         self.driver.get(data.urban_routes_url)
+        time.sleep(10)
         routes_page = UrbanRoutesPage(self.driver)
         address_from = data.address_from
         address_to = data.address_to
-        routes_page.set_route(address_from, address_to)
+        routes_page.set_from(address_from)
+        routes_page.set_to(address_to)
+
         assert routes_page.get_from() == address_from
         assert routes_page.get_to() == address_to
 
