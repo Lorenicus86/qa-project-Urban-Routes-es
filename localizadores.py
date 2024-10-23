@@ -1,8 +1,4 @@
-from pydoc import classname
-
 from selenium.webdriver.common.by import By
-
-from data import message_for_driver
 
 from_field = (By.ID, 'from')
 to_field = (By.ID, 'to')
@@ -17,10 +13,12 @@ payment_method_button = (By.CLASS_NAME, 'pp-value-text')
 plus_container_button = (By.CLASS_NAME, 'pp-plus-container')
 card_field=(By.ID, 'number')
 code_card_field=(By.XPATH, "//input[@id='code' and @name='code']")
-anywhere_click=(By.XPATH, "//div[@class='head' and text()='Agregar tarjeta']")
+add_card_button=(By.XPATH, "//div[@class='head' and text()='Agregar tarjeta']")
 add_button=(By.XPATH, '//button[text()="Agregar"]')
 close_button=(By.XPATH, "(//button[@class='close-button section-close'])[3]")
 message_for_driver_field=(By.XPATH, '//input[@id="comment"]')
 manta_panuelos=(By.XPATH, '//span[@class="slider round"][1]')
 helados_sel=(By.CSS_SELECTOR, '.counter-plus')
+add_helados_value=(By.CSS_SELECTOR, '.counter-value')
 busqueda_taxi_button=(By.CSS_SELECTOR, '.smart-button-secondary')
+car_image = (By.CSS_SELECTOR, "img[alt='Car'][src='/static/media/kids.075fd8d4.svg']")
