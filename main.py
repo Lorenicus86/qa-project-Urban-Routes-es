@@ -1,8 +1,6 @@
-from socks import PRINTABLE_PROXY_TYPES
-
 import data
 from selenium import webdriver
-from metodos import UrbanRoutesPage
+from UrbanRoutesPage import UrbanRoutesPage
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 

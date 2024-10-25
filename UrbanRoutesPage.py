@@ -156,7 +156,7 @@ class UrbanRoutesPage:
         self.driver.find_element(*self.busqueda_taxi_button).click()
 
     def is_taxi_modal_displayed(self):
-        WebDriverWait(self.driver, 30).until(
+        WebDriverWait(self.driver, 40).until(
             EC.visibility_of_element_located(self.car_image)
         )
         return self.driver.find_element(*self.car_image).is_displayed()
