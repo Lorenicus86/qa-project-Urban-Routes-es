@@ -11,7 +11,8 @@ class UrbanRoutesPage:
         self.to_field = (By.ID, 'to')
         self.request_taxi_button = (By.XPATH, '//button[text()="Pedir un taxi"]')
         self.comfort_sel = (By.XPATH, '(//img[@alt="Comfort"])[1]')
-        self.phone_field = (By.CSS_SELECTOR, ".np-text")
+        self.comfort_val = (By.XPATH, "//div[contains(text(), 'Manta y pañuelos')]")
+        self.phone_field = (By.CLASS_NAME, 'np-text')
         self.phone_field_input = (By.ID, 'phone')
         self.next_button = (By.CSS_SELECTOR, ".button.full")
         self.code_field = (By.XPATH, "//input[@id='code' and @class='input']")
@@ -25,6 +26,7 @@ class UrbanRoutesPage:
         self.close_button = (By.XPATH, "(//button[@class='close-button section-close'])[3]")
         self.message_for_driver_field = (By.XPATH, '//input[@id="comment"]')
         self.manta_panuelos = (By.XPATH, '//span[@class="slider round"][1]')
+        self.manta_panuelos_sel = (By.CSS_SELECTOR, "input.switch-input")
         self.helados_sel = (By.CSS_SELECTOR, '.counter-plus')
         self.busqueda_taxi_button = (By.CSS_SELECTOR, '.smart-button-secondary')
         self.car_image = (By.CSS_SELECTOR, "img[alt='Car'][src='/static/media/kids.075fd8d4.svg']")
@@ -53,8 +55,7 @@ class UrbanRoutesPage:
         self.driver.find_element(*self.comfort_sel).click()
 
     def is_comfort_selected(self):
-        # Lógica para verificar si la tarifa Comfort está seleccionada
-        return self.driver.find_element(*self.comfort_sel).is_displayed()
+        return self.driver.find_element(*self.comfort_val).is_displayed()
 
     def click_phone_field(self):
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable(self.phone_field))
@@ -65,7 +66,8 @@ class UrbanRoutesPage:
         self.driver.find_element(*self.phone_field_input).send_keys(input_phone_field)
 
     def get_phone(self):
-        return self.driver.find_element(*self.phone_field_input).get_property('value')
+        WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(self.phone_field))
+        return self.driver.find_element(*self.phone_field).text
 
     def click_next_button(self):
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable(self.next_button))
@@ -96,7 +98,7 @@ class UrbanRoutesPage:
         self.driver.find_element(*self.card_field).send_keys(field_card)
 
     def get_card(self):
-        return self.driver.find_element(*self.card_field).get_property('value')
+        return self.driver.find_element(*self.payment_method_button).text
 
     def set_code_card(self, field_code_card):
         WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(self.code_card_field))
@@ -128,16 +130,13 @@ class UrbanRoutesPage:
         return self.driver.find_element(*self.message_for_driver_field).get_property('value')
 
     def act_manta_panuelos(self):
-        # Encuentra el elemento del slider
         slider = self.driver.find_element(*self.manta_panuelos)
-
-        # Crea una acción para mover el slider
         action = ActionChains(self.driver)
         action.click_and_hold(slider).move_by_offset(20, 0).release().perform()
 
     def is_manta_panuelos_selected(self):
-        # Lógica para verificar si las mantas y pañuelos están seleccionados
-        return self.driver.find_element(*self.manta_panuelos).is_displayed()
+        manta_element = self.driver.find_element(*self.manta_panuelos_sel)
+        return manta_element.is_selected()
 
     def double_click_helados_sel(self):
         element = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(self.helados_sel))
@@ -149,7 +148,6 @@ class UrbanRoutesPage:
         WebDriverWait(self.driver, 10).until(
             EC.visibility_of_element_located(self.add_helados_value)
         )
-        # Lógica para contar la cantidad de helados seleccionados
         count_text = self.driver.find_element(*self.add_helados_value).text
         return int(count_text) if count_text.isdigit() else 0
 
@@ -157,11 +155,8 @@ class UrbanRoutesPage:
         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable(self.busqueda_taxi_button))
         self.driver.find_element(*self.busqueda_taxi_button).click()
 
-    def wait_for_car_image(self):
-        WebDriverWait(self.driver, 40).until(
+    def is_taxi_modal_displayed(self):
+        WebDriverWait(self.driver, 30).until(
             EC.visibility_of_element_located(self.car_image)
         )
-
-    def is_taxi_modal_displayed(self):
-        # Lógica para verificar si el modal de taxi se está mostrando
         return self.driver.find_element(*self.car_image).is_displayed()
